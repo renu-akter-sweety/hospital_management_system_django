@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+{% block body %}
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f8f9fa;
+    margin: 0;
+    padding: 0;
+  }
+
+  .form-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+  }
+
+  .form-container {
+    background: #fff;
+    padding: 30px 40px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    width: 500px;
+  }
+
+  .form-container h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #333;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+
+  .form-group input,
+  .form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+
+  .submit-btn {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .submit-btn:hover {
+    background-color: #0056b3;
+  }
+
+  table {
+    width: 90%;
+    margin: 40px auto;
+    border-collapse: collapse;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    color:black;
+  }
+
+  th, td {
+    padding: 12px 15px;
+    border: 1px solid #e2e2e2;
+    text-align: left;
+  }
+
+  th {
+    background-color: #007bff;
+    color: white;
+  }
+
+  tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+
+  .hide {
+    display: none;
+  }
+  label {
+    color:black;
+  }
+</style>
+
+<form class="appointment-form" action="" method="POST">
+  {% csrf_token %}
+  <h2>Schedule Appointment</h2>
+
+  <div class="form-group">
+    <label for="patient">Patient</label>
+    <select id="patient" name="patient" required>
+      <option value="" disabled selected>Select patient</option>
+      {% for patient in patient_data %}
+        <option value="{{ patient.id }}">{{ patient.id }} - {{ patient.name }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="doctor">Doctor</label>
+    <select id="doctor" name="doctor" required>
+      <option value="" disabled selected>Select doctor</option>
+      {% for doctor in doctor_data %}
+        <option value="{{ doctor.id }}">{{ doctor.id }} - {{ doctor.name }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="appointment_date">Appointment Date & Time</label>
+    <input type="date" id="appointment_date" name="appointment_date" required />
+  </div>
+
+  <div class="form-group">
+    <label for="status">Status</label>
+    <select id="status" name="status" class="status-select" required>
+      <option value="" disabled selected>Select status</option>
+      <option value="Pending">Pending</option>
+      <option value="Completed">Completed</option>
+      <option value="Cancelled">Cancelled</option>
+    </select>
+  </div>
+
+  <button type="submit">Book Appointment</button>
+</form>
+<table>
+  <tr>
+    <th>patient Name</th>
+    <th>Doctor_name</th>
+    <th>appointment_date</th>
+    <th>status</th>
+  
+  </tr>
+  {% for i in appointment_data  %}
+  <tr>
+    <td>{{ i.patient.name}}</td>
+    <td>{{ i.doctor.name }}</td>
+    <td>{{ i.appointment_date}}</td>
+    <td>{{ i.status }}</td>
+
+  </tr>
+  {% endfor %}
+</table>
+{% endblock body %}

@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f8f9fa;
+    margin: 0;
+    padding: 0;
+  }
+
+  .form-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+  }
+
+  .form-container {
+    background: #fff;
+    padding: 30px 40px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    width: 500px;
+  }
+
+  .form-container h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #333;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+
+  .form-group input,
+  .form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+
+  .submit-btn {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .submit-btn:hover {
+    background-color: #0056b3;
+  }
+
+  table {
+    width: 90%;
+    margin: 40px auto;
+    border-collapse: collapse;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    color:black;
+  }
+
+  th, td {
+    padding: 12px 15px;
+    border: 1px solid #e2e2e2;
+    text-align: left;
+  }
+
+  th {
+    background-color: #007bff;
+    color: white;
+  }
+
+  tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+
+  .hide {
+    display: none;
+  }
+  label,select option {
+    color:black;
+  }
+</style>
+{% endblock head %}
+
+{% block body %}
+<div class="form-wrapper">
+  <div class="form-container">
+    <h2>patient Information Form</h2>
+    <form method="POST">
+      {% csrf_token %}
+      
+      <div class="form-group">
+        <label for="name">patient Name</label>
+        <input type="text" id="name" name="name" required />
+      </div>
+
+      <div class="form-group">
+        <label for="age">age</label>
+        <input type="number" id="age" name="age" required />
+      </div>
+
+      <div class="form-group">
+        <label for="phone">gender</label>
+        <select name="gender" id="gender">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="others">others</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="phone">phone</label>
+        <input type="tel" id="phone" name="phone" required />
+      </div>
+      <div class="form-group">
+        <label for="address">address</label>
+        <input type="text" id="address" name="address" required />
+      </div>
+
+      <div class="form-group">
+        <label for="doctor_data">doctor</label>
+        <select name="doctor_id" id="doctor_data" required>
+          <option value="doctor_data">--select--</option>
+          {% for i in doctor_data %}
+            <option value="{{ i.id }}"> {{ i.name }}</option>
+          {% endfor %}
+        </select>
+        <input class="hide" type="text" id="department" name="department" />
+      </div>
+
+      <input type="submit" value="Submit" class="submit-btn">
+    </form>
+  </div>
+</div>
+
+<table>
+  <tr>
+    <th>doctor</th>
+    <th>Name</th>
+    <th>age</th>
+    <th>gender</th>
+    <th>phone</th>
+    <th>address</th>
+  </tr>
+  {% for i in patient_data %}
+  <tr>
+    <td>{{ i.doctor.name }}</td>
+    <td>{{ i.name }}</td>
+    <td>{{ i.age }}</td>
+    <td>{{ i.gender}}</td>
+    <td>{{ i.phone }}</td>
+    <td>{{ i.address }}</td>
+
+  </tr>
+  {% endfor %}
+</table>
+{% endblock body %}
